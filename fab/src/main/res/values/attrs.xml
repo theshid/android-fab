@@ -14,6 +14,7 @@
 		<attr name="buttonIcon" format="reference"/>
 
 		<attr name="buttonBackgroundColour" format="color"/>
+		<attr name="buttonLabelBackgroundColour" format="color"/>
 
 		<attr name="internalOffsetTop" format="dimension"/>
 		<attr name="internalOffsetBottom" format="dimension"/>

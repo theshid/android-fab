@@ -3,6 +3,7 @@ package uk.co.markormesher.android_fab.app
 import android.content.Context
 import android.graphics.Typeface
 import android.os.*
+import android.util.Log
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
@@ -33,6 +34,14 @@ class DemoActivity: AppCompatActivity() {
 	)
 
 	private val buttonBgColourOptions = arrayOf(
+			Pair("Blue", 0xff0099ff.toInt()),
+			Pair("Purple", 0xff9900ff.toInt()),
+			Pair("Teal", 0xff00ff99.toInt()),
+			Pair("Pink", 0xffff0099.toInt()),
+			Pair("Orange", 0xffff9900.toInt())
+	)
+
+	private val buttonLabelColourOptions = arrayOf(
 			Pair("Blue", 0xff0099ff.toInt()),
 			Pair("Purple", 0xff9900ff.toInt()),
 			Pair("Teal", 0xff00ff99.toInt()),
@@ -74,6 +83,7 @@ class DemoActivity: AppCompatActivity() {
 	private var buttonShown = 0
 	private var buttonPosition = 0
 	private var buttonBackgroundColour = 0
+	private var buttonLabelBackgroundColour = 0
 	private var buttonIcon = 0
 	private var speedDialSize = 0
 	private var contentCoverColour = 0
@@ -136,6 +146,7 @@ class DemoActivity: AppCompatActivity() {
 		updateButtonShown()
 		updateButtonPosition()
 		updateButtonBackgroundColour()
+		updateButtonLabelBackgroundColour()
 		updateButtonIcon()
 		updateSpeedDialSize()
 		updateContentCoverColour()
@@ -151,6 +162,7 @@ class DemoActivity: AppCompatActivity() {
 		outState.putInt("buttonShown", buttonShown)
 		outState.putInt("buttonPosition", buttonPosition)
 		outState.putInt("buttonBackgroundColour", buttonBackgroundColour)
+		outState.putInt("buttonLabelBackgroundColour", buttonLabelBackgroundColour)
 		outState.putInt("buttonIcon", buttonIcon)
 		outState.putInt("speedDialSize", speedDialSize)
 		outState.putInt("contentCoverColour", contentCoverColour)
@@ -164,6 +176,7 @@ class DemoActivity: AppCompatActivity() {
 			buttonShown = savedInstanceState.getInt("buttonShown")
 			buttonPosition = savedInstanceState.getInt("buttonPosition")
 			buttonBackgroundColour = savedInstanceState.getInt("buttonBackgroundColour")
+			buttonLabelBackgroundColour = savedInstanceState.getInt("buttonOptionBackgroundColour")
 			buttonIcon = savedInstanceState.getInt("buttonIcon")
 			speedDialSize = savedInstanceState.getInt("speedDialSize")
 			contentCoverColour = savedInstanceState.getInt("contentCoverColour")
@@ -222,6 +235,17 @@ class DemoActivity: AppCompatActivity() {
 		set_button_background_colour_prev.setOnClickListener {
 			buttonBackgroundColour = (buttonBackgroundColour + buttonBgColourOptions.size - 1).rem(buttonBgColourOptions.size)
 			updateButtonBackgroundColour()
+		}
+
+		//edit
+		set_button_label_background_colour_next.setOnClickListener {
+			buttonLabelBackgroundColour = (buttonLabelBackgroundColour + 1).rem(buttonLabelColourOptions.size)
+			updateButtonLabelBackgroundColour()
+		}
+		//edit
+		set_button_label_background_colour_prev.setOnClickListener {
+			buttonLabelBackgroundColour = (buttonLabelBackgroundColour + buttonLabelColourOptions.size - 1).rem(buttonLabelColourOptions.size)
+			updateButtonLabelBackgroundColour()
 		}
 
 		set_button_icon_next.setOnClickListener {
@@ -288,6 +312,11 @@ class DemoActivity: AppCompatActivity() {
 	private fun updateButtonBackgroundColour() {
 		button_background_colour.text = buttonBgColourOptions[buttonBackgroundColour].first
 		fab.setButtonBackgroundColour(buttonBgColourOptions[buttonBackgroundColour].second)
+	}
+
+	private fun updateButtonLabelBackgroundColour(){
+		button_label_background_colour.text = buttonLabelColourOptions[buttonLabelBackgroundColour].first
+		fab.setButtonLabelBackgroundColour(buttonLabelColourOptions[buttonLabelBackgroundColour].second)
 	}
 
 	private fun updateButtonIcon() {

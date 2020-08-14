@@ -54,6 +54,7 @@ class FloatingActionButton: RelativeLayout {
 	// defaults for all user-controllable parameters
 	private var buttonPosition = POSITION_BOTTOM.or(POSITION_END)
 	private var buttonBackgroundColour = 0xff0099ff.toInt()
+	private var buttonLabelBackgroundColour = 0xffc0c0c0.toInt()
 	private var buttonIconResource = 0
 	private var contentCoverColour = 0xccffffff.toInt()
 	var contentCoverEnabled = true
@@ -105,6 +106,7 @@ class FloatingActionButton: RelativeLayout {
 		state.putBoolean("isShown", isShown)
 		state.putInt("buttonPosition", buttonPosition)
 		state.putInt("buttonBackgroundColour", buttonBackgroundColour)
+		state.putInt("buttonLabelBackgroundColour", buttonLabelBackgroundColour)
 		state.putInt("buttonIconResource", buttonIconResource)
 		state.putInt("contentCoverColour", contentCoverColour)
 		state.putBoolean("contentCoverEnabled", contentCoverEnabled)
@@ -132,6 +134,9 @@ class FloatingActionButton: RelativeLayout {
 
 			buttonBackgroundColour = state.getInt("buttonBackgroundColour", buttonBackgroundColour)
 			setButtonBackgroundColour(buttonBackgroundColour)
+
+			buttonLabelBackgroundColour = state.getInt("buttonLabelBackgroundColour",buttonLabelBackgroundColour)
+			setButtonLabelBackgroundColour(buttonLabelBackgroundColour)
 
 			buttonIconResource = state.getInt("buttonIconResource", buttonIconResource)
 			setButtonIconResource(buttonIconResource)
@@ -192,6 +197,7 @@ class FloatingActionButton: RelativeLayout {
 		try {
 			setButtonPosition(attrs.getInteger(R.styleable.FloatingActionButton_buttonPosition, buttonPosition))
 			setButtonBackgroundColour(attrs.getColor(R.styleable.FloatingActionButton_buttonBackgroundColour, buttonBackgroundColour))
+			setButtonLabelBackgroundColour(attrs.getColor(R.styleable.FloatingActionButton_buttonLabelBackgroundColour,buttonLabelBackgroundColour))
 			setButtonIconResource(attrs.getResourceId(R.styleable.FloatingActionButton_buttonIcon, 0))
 			setInternalOffsetTop(attrs.getDimension(R.styleable.FloatingActionButton_internalOffsetTop, 0f))
 			setInternalOffsetBottom(attrs.getDimension(R.styleable.FloatingActionButton_internalOffsetBottom, 0f))
@@ -292,6 +298,23 @@ class FloatingActionButton: RelativeLayout {
 			(fab_card as CardView).setCardBackgroundColor(colour)
 		} else {
 			(fab_card.background as GradientDrawable).setColor(colour)
+		}
+	}
+
+	fun setButtonLabelBackgroundColour(@ColorInt colour: Int){
+		buttonLabelBackgroundColour = colour
+		if (Build.VERSION.SDK_INT >= 21) {
+			if (speedDialMenuAdapter?.isEnabled() == true && speedDialMenuAdapter?.getCount() ?: 0 > 0) {
+				(menu_item_card as CardView).setCardBackgroundColor(colour)
+				rebuildSpeedDialMenu()
+			}
+
+		} else {
+			if (speedDialMenuAdapter?.isEnabled() == true && speedDialMenuAdapter?.getCount() ?: 0 > 0) {
+				(menu_item_card.background as GradientDrawable).setColor(colour)
+				rebuildSpeedDialMenu()
+			}
+
 		}
 	}
 
@@ -458,9 +481,9 @@ class FloatingActionButton: RelativeLayout {
 			speedDialMenuAdapter?.onPrepareItemLabel(context, i, view.menu_item_label)
 
 			if (Build.VERSION.SDK_INT >= 21) {
-				(view.menu_item_card as CardView).setCardBackgroundColor(adapter.getBackgroundColour(i))
+				(view.menu_item_card as CardView).setCardBackgroundColor(buttonLabelBackgroundColour)
 			} else {
-				((view.menu_item_card as ViewGroup).background as GradientDrawable).setColor(adapter.getBackgroundColour(i))
+				((view.menu_item_card as ViewGroup).background as GradientDrawable).setColor(buttonLabelBackgroundColour)
 			}
 			speedDialMenuAdapter?.onPrepareItemCard(context, i, view.menu_item_card)
 
